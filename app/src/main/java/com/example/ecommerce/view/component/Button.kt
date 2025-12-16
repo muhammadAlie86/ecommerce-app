@@ -1,0 +1,58 @@
+package com.example.ecommerce.view.component
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.example.ecommerce.view.theme.Black
+import com.example.ecommerce.view.theme.PoppinsSemiBold
+import com.example.ecommerce.view.theme.grey
+
+
+@Composable
+fun ButtonPrimary(
+    modifier: Modifier = Modifier,
+    text: String,
+    onClick: () -> Unit,
+    enable : Boolean
+) {
+    Button(
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            disabledContainerColor = grey
+        ),
+        elevation = ButtonDefaults.buttonElevation(
+            defaultElevation = 10.dp,
+            pressedElevation = 15.dp,
+            disabledElevation = 0.dp,
+            hoveredElevation = 15.dp,
+            focusedElevation = 10.dp
+        ),
+        shape = RoundedCornerShape(24.dp),
+        onClick = onClick,
+        enabled = enable
+    ) {
+        Text(
+            modifier = Modifier.padding(5.dp),
+            text = text,
+            style = TextStyle.Default
+                .responsiveTextSize(baseFontSizeSp = 16f, screenWidthFraction = 0.75f)
+                .copy(
+                    color = Black,
+                    textAlign = TextAlign.Center,
+                    fontFamily = PoppinsSemiBold
+                )
+        )
+
+    }
+
+}
+
+

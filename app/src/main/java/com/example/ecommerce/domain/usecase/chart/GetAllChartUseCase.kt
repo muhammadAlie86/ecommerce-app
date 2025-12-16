@@ -1,0 +1,11 @@
+package com.example.ecommerce.domain.usecase.chart
+
+import com.example.ecommerce.core.data.repository.ChartRepository
+import javax.inject.Inject
+
+class GetAllChartUseCase @Inject constructor(
+    val repository: ChartRepository
+) {
+
+
+}
