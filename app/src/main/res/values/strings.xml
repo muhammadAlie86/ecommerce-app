@@ -1,5 +1,21 @@
 <resources>
     <string name="app_name">ecommerce</string>
     <string name="ok">OK</string>
-    <string name="information">Informasi</string>
+    <string name="information">Information</string>
+    <string name="yet_activated">"Don't have an account?"</string>
+    <string name="register">SIGN UP</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="login_title">Login to your Account</string>
+
+    <string name="category">Category</string>
+    <string name="product">Product</string>
+    <string name="cart">Category</string>
+    <string name="greeting">Hello,</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="input_username">Input Username</string>
+    <string name="input_password">Input Password</string>
+    <string name="error_username">Username cannot be empty</string>
+
+    <string name="error_password">Password cannot be empty</string>
 </resources>

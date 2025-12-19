@@ -2,8 +2,10 @@ package com.example.ecommerce.domain.mapper
 
 import com.example.ecommerce.core.data.remote.models.response.AddressResponse
 import com.example.ecommerce.core.data.remote.models.response.GeolocationResponse
+import com.example.ecommerce.core.data.remote.models.response.ProductResponse
 import com.example.ecommerce.core.data.remote.models.response.UserResponse
 import com.example.ecommerce.domain.model.Coordinates
+import com.example.ecommerce.domain.model.Product
 import com.example.ecommerce.domain.model.User
 import com.example.ecommerce.domain.model.UserAddress
 
@@ -37,4 +39,7 @@ fun UserResponse.toDomain(): User {
         userAddress = domainAddress,
         phoneNumber = this.phone
     )
+}
+fun List<UserResponse>.toDomainList(): List<User> {
+    return this.map { it.toDomain() }
 }

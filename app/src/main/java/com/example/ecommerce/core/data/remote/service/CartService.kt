@@ -11,21 +11,24 @@ import retrofit2.http.Path
 
 interface CartService {
 
-    @GET("charts")
-    suspend fun getAllChart(): List<CartResponse>
+    @GET("carts")
+    suspend fun getAllCart(): List<CartResponse>
 
-    @GET("charts/{id}")
-    suspend fun getChart(@Path("id") id: Int): CartResponse
+    @GET("carts/{id}")
+    suspend fun getCart(@Path("id") id: Int): CartResponse
 
-    @PUT("charts/{id}")
-    suspend fun updateChart(
+    @GET("carts/user/{id}")
+    suspend fun getCartUser(@Path("id") id: Int): List<CartResponse>
+
+    @PUT("carts/{id}")
+    suspend fun updateCart(
         @Path("id") id: Int,
         @Body request: CartRequest
     ): CartResponse
 
-    @POST("charts")
-    suspend fun addChart(@Body request: CartRequest): CartResponse
+    @POST("carts")
+    suspend fun addCart(@Body request: CartRequest): CartResponse
 
     @DELETE("charts/{id}")
-    suspend fun deleteChart(@Path("id") id: Int): String
+    suspend fun deleteCart(@Path("id") id: Int): String
 }

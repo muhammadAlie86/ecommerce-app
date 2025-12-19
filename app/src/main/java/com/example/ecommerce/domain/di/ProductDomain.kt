@@ -37,8 +37,8 @@ class ProductDomain {
     }
     @Singleton
     @Provides
-    fun provideUpdateProductUseCase(repository: ProductRepository): GetAllProductUseCase {
-        return GetAllProductUseCase(repository)
+    fun provideUpdateProductUseCase(repository: ProductRepository): UpdateProductUseCase {
+        return UpdateProductUseCase(repository)
     }
 
 

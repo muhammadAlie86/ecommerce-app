@@ -7,18 +7,19 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ChartRepository @Inject constructor(
-    val chartService: CartService
+class CartRepository @Inject constructor(
+    val cartService: CartService
 ){
 
-    suspend fun getAllChart(): List<CartResponse> = chartService.getAllChart()
+    suspend fun getAllCart(): List<CartResponse> = cartService.getAllCart()
 
-    suspend fun getChart(id: Int): CartResponse = chartService.getChart(id)
+    suspend fun getCart(id: Int): CartResponse = cartService.getCart(id)
+    suspend fun getCartUser(id: Int): List<CartResponse> = cartService.getCartUser(id)
 
-    suspend fun updateChart(id: Int,request: CartRequest): CartResponse = chartService.updateChart(id,request)
-    suspend fun addChart(request: CartRequest): CartResponse = chartService.addChart(request)
+    suspend fun updateCart(id: Int,request: CartRequest): CartResponse = cartService.updateCart(id,request)
+    suspend fun addCart(request: CartRequest): CartResponse = cartService.addCart(request)
 
-    suspend fun deleteChart(id: Int): String = chartService.deleteChart(id)
+    suspend fun deleteCart(id: Int): String = cartService.deleteCart(id)
 }
 
 

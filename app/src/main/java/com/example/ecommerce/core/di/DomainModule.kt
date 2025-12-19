@@ -11,7 +11,7 @@ import dagger.hilt.components.SingletonComponent
         AuthDomain::class,
         UserDomain::class,
         ProductDomain::class,
-        ChartDomain::class,
+        CartDomain::class,
     ]
 )
 @InstallIn(SingletonComponent::class)

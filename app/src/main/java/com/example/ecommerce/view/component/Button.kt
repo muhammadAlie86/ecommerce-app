@@ -43,7 +43,7 @@ fun ButtonPrimary(
             modifier = Modifier.padding(5.dp),
             text = text,
             style = TextStyle.Default
-                .responsiveTextSize(baseFontSizeSp = 16f, screenWidthFraction = 0.75f)
+                .responsiveTextSize(baseFontSize = 3.5f)
                 .copy(
                     color = Black,
                     textAlign = TextAlign.Center,

@@ -9,7 +9,6 @@ import com.example.ecommerce.domain.model.CartItem
 fun CartResponse.toDomain(): Cart {
     val domainProducts = this.products.map { it.toDomain() }
 
-
     return Cart(
         id = this.cartId,
         userId = this.userId,
@@ -23,4 +22,8 @@ fun CartProductResponse.toDomain(): CartItem {
         id = this.productId,
         quantity = this.quantity
     )
+}
+
+fun List<CartResponse>.toDomainList(): List<Cart> {
+    return this.map { it.toDomain() }
 }

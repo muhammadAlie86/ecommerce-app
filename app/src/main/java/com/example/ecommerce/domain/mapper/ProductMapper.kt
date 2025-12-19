@@ -24,3 +24,7 @@ fun RatingResponse.toDomain(): Rating {
         count = this.count
     )
 }
+
+fun List<ProductResponse>.toDomainList(): List<Product> {
+    return this.map { it.toDomain() }
+}

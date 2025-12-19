@@ -1,7 +1,7 @@
 package com.example.ecommerce.domain.di
 
 import com.example.ecommerce.core.data.repository.CartRepository
-import com.example.ecommerce.domain.usecase.chart.*
+import com.example.ecommerce.domain.usecase.cart.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,33 +11,38 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class ChartDomain {
+class CartDomain {
 
     @Singleton
     @Provides
-    fun provideAddChartUseCase(repository: CartRepository): AddCartUseCase {
+    fun provideAddCartUseCase(repository: CartRepository): AddCartUseCase {
         return AddCartUseCase(repository)
     }
     @Singleton
     @Provides
-    fun provideDeleteChartUseCase(repository: CartRepository): DeleteChartUseCase {
-        return DeleteChartUseCase(repository)
+    fun provideDeleteCartUseCase(repository: CartRepository): DeleteCartUseCase {
+        return DeleteCartUseCase(repository)
     }
 
     @Singleton
     @Provides
-    fun provideGetAllChartUseCase(repository: CartRepository): GetAllChartUseCase {
-        return GetAllChartUseCase(repository)
+    fun provideGetAllCartUseCase(repository: CartRepository): GetAllCartUseCase {
+        return GetAllCartUseCase(repository)
     }
     @Singleton
     @Provides
-    fun provideGetChartUseCase(repository: CartRepository): GetChartUseCase {
-        return GetChartUseCase(repository)
+    fun provideGetCartUseCase(repository: CartRepository): GetCartUseCase {
+        return GetCartUseCase(repository)
     }
     @Singleton
     @Provides
-    fun provideUpdateChartUseCase(repository: CartRepository): GetAllChartUseCase {
-        return GetAllChartUseCase(repository)
+    fun provideUpdateCartUseCase(repository: CartRepository): GetAllCartUseCase {
+        return GetAllCartUseCase(repository)
+    }
+    @Singleton
+    @Provides
+    fun provideGetCartUserUseCase(repository: CartRepository): GetCartUserUseCase {
+        return GetCartUserUseCase(repository)
     }
 
 

@@ -20,7 +20,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    buildFeatures {
+        buildConfig = true
+    }
     buildTypes {
         debug {
 
@@ -60,6 +62,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
@@ -97,5 +100,11 @@ dependencies {
 
     // debugging
     implementation (libs.timber)
+
+    //datastore
+    implementation(libs.datastore.preferences.core)
+    implementation(libs.datastore.preferences)
+
+    implementation(libs.coil.compose)
 
 }

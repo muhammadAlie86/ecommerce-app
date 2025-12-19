@@ -7,19 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.arranet.payajabisnis.ppob.R
-import com.arranet.payajabisnis.ppob.component.responsiveTextSize
-import com.arranet.payajabisnis.ppob.theme.PoppinsMedium
-import com.arranet.payajabisnis.ppob.theme.White
-import com.arranet.payajabisnis.ppob.theme.darker_grey
+import com.example.ecommerce.R
+import com.example.ecommerce.view.component.responsiveTextSize
+import com.example.ecommerce.view.theme.White
 
 @Composable
 fun TooltipContent(
     modifier: Modifier,
-    tooltipText: String,
+    tooltipText: Int,
 ) {
     TooltipPopup(
         modifier = modifier,
@@ -36,9 +35,9 @@ fun TooltipContent(
                 modifier = Modifier
                     .padding(horizontal = 12.dp)
                     .padding(vertical = 8.dp),
-                text = tooltipText,
+                text = stringResource(tooltipText),
                 style = TextStyle.Default
-                    .responsiveTextSize(baseFontSizeSp = 14f, screenWidthFraction = 0.6f)
+                    .responsiveTextSize(baseFontSize = 3f)
                     .copy(
                         color = White,
                         textAlign = TextAlign.Center,

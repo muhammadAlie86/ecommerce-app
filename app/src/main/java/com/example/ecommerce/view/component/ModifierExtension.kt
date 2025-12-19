@@ -1,39 +1,47 @@
 package com.example.ecommerce.view.component
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ecommerce.view.theme.Black
-import com.example.ecommerce.view.theme.PoppinsRegular
 
 @Composable
 fun TextStyle.responsiveTextSize(
-    baseFontSizeSp: Float = 14f,
-    screenWidthFraction: Float = 1.0f,
-    minFontSizeSp: Float = 13f,
-    maxFontSizeSp: Float = 18f,
-    color: Color = Black,
+    baseFontSize: Float = 4f,
+    minFontSizeSp: Float = 8f,
+    maxFontSizeSp: Float = 40f,
+    color: Color = Color.Unspecified,
     textAlign: TextAlign = TextAlign.Start,
-    fontFamily: FontFamily = PoppinsRegular
+    fontFamily: FontFamily = FontFamily.Default
 ): TextStyle {
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
 
-    val screenWidthDp = configuration.screenWidthDp.dp
-    val fractionedScreenWidthDp = screenWidthDp * screenWidthFraction
+    val screenWidthDp = configuration.screenWidthDp
 
-    val textSizeSp = with(density) {
-        (fractionedScreenWidthDp / baseFontSizeSp).toSp()
-    }.value.coerceIn(minFontSizeSp, maxFontSizeSp).sp
+    val calculatedSp = (screenWidthDp * (baseFontSize / 100f))
+
+    val finalFontSize = with(density) {
+        calculatedSp.coerceIn(minFontSizeSp, maxFontSizeSp).sp
+    }
 
     return this.copy(
-        fontSize = textSizeSp,
+        fontSize = finalFontSize,
         color = color,
         textAlign = textAlign,
         fontFamily = fontFamily
@@ -65,5 +73,30 @@ fun String.validationDigit(
 
     return newText
 
+}
+@Composable
+fun Modifier.shimmerEffect(): Modifier {
+    val transition = rememberInfiniteTransition(label = "shimmer")
+    val translateAnim by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1000f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1200, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "shimmer_rect"
+    )
+
+    val brush = Brush.linearGradient(
+        colors = listOf(
+            Color.LightGray.copy(alpha = 0.6f),
+            Color.LightGray.copy(alpha = 0.2f),
+            Color.LightGray.copy(alpha = 0.6f),
+        ),
+        start = Offset(10f, 10f),
+        end = Offset(translateAnim, translateAnim)
+    )
+
+    return this.background(brush)
 }
 

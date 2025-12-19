@@ -17,6 +17,12 @@ interface ProductService {
     @GET("products/{id}")
     suspend fun getProduct(@Path("id") id: Int): ProductResponse
 
+    @GET("products/categories")
+    suspend fun getProductCategories():  List<ProductResponse>
+
+    @GET("products/category/{category}")
+    suspend fun getListProductCategories(@Path("category") category: String):  List<ProductResponse>
+
     @PUT("products/{id}")
     suspend fun updateProduct(
         @Path("id") id: Int,

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.ecommerce.view.navigation.SetupNavGraph
 import com.example.ecommerce.view.theme.EcommerceTheme
 import dagger.hilt.android.AndroidEntryPoint
 

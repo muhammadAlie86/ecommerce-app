@@ -60,7 +60,7 @@ fun DialogCommon(
                 Text(
                     text = stringResource(id = label),
                     style = TextStyle.Default
-                        .responsiveTextSize(baseFontSizeSp = 14f, screenWidthFraction = 0.7f)
+                        .responsiveTextSize(baseFontSize = 3.5f)
                         .copy(
                             color = Black,
                             textAlign = TextAlign.Start,
@@ -72,7 +72,7 @@ fun DialogCommon(
                 Text(
                     text = message,
                     style = TextStyle.Default
-                        .responsiveTextSize(baseFontSizeSp = 14f, screenWidthFraction = 0.7f)
+                        .responsiveTextSize(baseFontSize = 3.5f)
                         .copy(
                             color = Black,
                             textAlign = TextAlign.Start,
@@ -85,91 +85,3 @@ fun DialogCommon(
 }
 
 
-
-@Composable
-fun DialogConfirmation(
-    modifier: Modifier = Modifier,
-    visible: Boolean,
-    onDismiss: () -> Unit,
-    onYesAction: () -> Unit,
-    onNoAction: () -> Unit,
-    title: String
-) {
-
-    AnimatedVisibility(visible = visible, exit = ExitTransition.None) {
-        AlertDialog(
-            modifier = Modifier.padding(10.dp),
-            onDismissRequest = {},
-            confirmButton = {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
-
-                ) {
-
-
-                    ButtonCommon(
-                        label = "Ya",
-                        onClick = {
-                            onYesAction()
-                        },
-                        isEnable = true,
-                        background = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.primary,
-                        ),
-                        modifier = Modifier
-                            .padding(2.dp)
-                            .weight(1f)
-                    )
-                    ButtonCommon(
-                        label = "Tidak",
-                        onClick = {
-                            onNoAction()
-                        },
-                        isEnable = true,
-                        background = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                            contentColor = MaterialTheme.colorScheme.surface,
-                        ),
-                        modifier = Modifier
-                            .padding(2.dp)
-                            .weight(1f)
-                    )
-                }
-            },
-
-            title = {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.information),
-                        style = TextStyle.Default
-                            .responsiveTextSize(baseFontSizeSp = 12f, screenWidthFraction = 0.7f)
-                            .copy(
-                                color = Black,
-                            ),
-                        modifier = Modifier
-                            .clickable { onYesAction() }
-                    )
-
-                    Text(
-                        text = title,
-                        style = TextStyle.Default
-                            .responsiveTextSize(baseFontSizeSp = 14f, screenWidthFraction = 0.6f)
-                            .copy(
-                                color = Black,
-                            ),
-                    )
-                }
-            }
-        )
-    }
-
-}

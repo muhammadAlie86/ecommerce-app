@@ -5,7 +5,7 @@ import com.example.ecommerce.core.data.remote.service.CartService
 import com.example.ecommerce.core.data.remote.service.ProductService
 import com.example.ecommerce.core.data.remote.service.UserService
 import com.example.ecommerce.core.data.repository.AuthRepository
-import com.example.ecommerce.core.data.repository.ChartRepository
+import com.example.ecommerce.core.data.repository.CartRepository
 import com.example.ecommerce.core.data.repository.ProductRepository
 import com.example.ecommerce.core.data.repository.UserRepository
 import dagger.Module
@@ -24,7 +24,7 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideChartRepository(service: CartService) = ChartRepository(service)
+    fun provideChartRepository(service: CartService) = CartRepository(service)
 
     @Singleton
     @Provides

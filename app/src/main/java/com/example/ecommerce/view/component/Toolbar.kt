@@ -22,34 +22,12 @@ import com.example.ecommerce.R
 import com.example.ecommerce.view.theme.Black
 import com.example.ecommerce.view.theme.PoppinsSemiBold
 
-@ExperimentalMaterial3Api
-@Composable
-fun ToolbarWithoutNavIcon(
-    @StringRes titleResId: Int,
-) {
-    TopAppBar(
-        title = {
-            Text(
-                stringResource(titleResId),
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
-                style = MaterialTheme.typography.titleSmall
-            )
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                color = MaterialTheme.colorScheme.primary
-            ),
-    )
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBarWithNavIcon(
     titleResId: String,
-    pressOnBack: () -> Unit,
-    isClose: Boolean =false
+    pressOnBack: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -59,7 +37,7 @@ fun TopAppBarWithNavIcon(
                     .fillMaxWidth()
                     .padding(end = 30.dp),
                 style = TextStyle.Default
-                    .responsiveTextSize(baseFontSizeSp = 17f, screenWidthFraction = 0.8f)
+                    .responsiveTextSize(baseFontSize = 4.5f)
                     .copy(
                         color = Black,
                         textAlign = TextAlign.Center,

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "822317911170",
+    "project_id": "messagebroker-b9604",
+    "storage_bucket": "messagebroker-b9604.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822317911170:android:579b5b1d2c27b43a9ff89b",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaldFq5JQizh2I6rL4Pa0M02nSxO5NhFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822317911170:android:579b5b1d2c27b43a9ff89b",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaldFq5JQizh2I6rL4Pa0M02nSxO5NhFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

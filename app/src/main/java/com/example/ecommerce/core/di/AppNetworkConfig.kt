@@ -1,5 +1,6 @@
 package com.example.ecommerce.core.di
 
+import com.example.ecommerce.BuildConfig
 import com.example.ecommerce.libraries.base.app.NetworkConfig
 
 
