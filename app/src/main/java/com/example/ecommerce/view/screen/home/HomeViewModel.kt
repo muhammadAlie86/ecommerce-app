@@ -3,7 +3,9 @@ package com.example.ecommerce.view.screen.home
 import com.example.ecommerce.domain.model.Product
 import com.example.ecommerce.domain.model.User
 import com.example.ecommerce.domain.usecase.cart.GetCartUserUseCase
+import com.example.ecommerce.domain.usecase.cart.GetLocalCartCountUseCase
 import com.example.ecommerce.domain.usecase.product.GetAllProductUseCase
+import com.example.ecommerce.domain.usecase.product.GetLocalProductsUseCase
 import com.example.ecommerce.domain.usecase.user.GetUserUseCase
 import com.example.ecommerce.libraries.base.mvi.ErrorState
 import com.example.ecommerce.libraries.base.mvi.IViewState
@@ -13,22 +15,25 @@ import com.example.ecommerce.libraries.utils.ConstantsMessage.DEFAULT_MESSAGE
 import com.example.ecommerce.libraries.utils.ConstantsMessage.PRODUCT_EMPTY
 import com.example.ecommerce.libraries.utils.DataStoreManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getAllProductUseCase: GetAllProductUseCase,
+    private val getLocalProductsUseCase: GetLocalProductsUseCase,
     private val getUserUseCase: GetUserUseCase,
     private val getCartUserUseCase: GetCartUserUseCase,
-    private val dataStoreManager: DataStoreManager
+    private val dataStoreManager: DataStoreManager,
+    private val getLocalCartCountUseCase: GetLocalCartCountUseCase
 ) : MviViewModel<HomeState>(){
     init {
         getUserData()
+        observeLocalProducts()
+        observeCartBadge()
         getAllProduct()
     }
+
 
     fun getAllProduct() = safeLaunch {
         execute(getAllProductUseCase(Unit)){ product ->
@@ -37,6 +42,13 @@ class HomeViewModel @Inject constructor(
             }
             else{
                 handleError(Throwable(PRODUCT_EMPTY))
+            }
+        }
+    }
+    private fun observeLocalProducts() = safeLaunch {
+        getLocalProductsUseCase().collect { products ->
+            if (products.isNotEmpty()) {
+                setState { currentState.copy(productList = products) }
             }
         }
     }
@@ -66,6 +78,11 @@ class HomeViewModel @Inject constructor(
             else{
                 handleError(Throwable(PRODUCT_EMPTY))
             }
+        }
+    }
+    private fun observeCartBadge() = safeLaunch {
+        getLocalCartCountUseCase().collect { count ->
+            setState { currentState.copy(cartItemCount = count) }
         }
     }
     fun isSheetOpen(isSheetOpen: Boolean) = safeLaunch {

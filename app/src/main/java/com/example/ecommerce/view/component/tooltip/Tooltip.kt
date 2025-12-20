@@ -1,4 +1,4 @@
-package com.arranet.payajabisnis.ppob.component.tooltip
+package com.example.ecommerce.view.component.tooltip
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon

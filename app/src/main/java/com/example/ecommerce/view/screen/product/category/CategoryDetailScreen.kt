@@ -20,7 +20,7 @@ fun CategoryDetailScreen(
     ContainerBody(
         topBar = {
             TopAppBarWithNavIcon(
-                titleResId = "Keranjang Saya",
+                titleResId = "Category",
                 pressOnBack = {
                     onPopBackStack()
                 }

@@ -18,4 +18,5 @@
     <string name="error_username">Username cannot be empty</string>
 
     <string name="error_password">Password cannot be empty</string>
+    <string name="cancelled">Do you want to remove?</string>
 </resources>

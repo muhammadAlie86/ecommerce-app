@@ -35,7 +35,6 @@ fun NavGraphBuilder.loginNavigation(
         )
     {
         LoginScreen(
-            onNavigateToRegister = navController::navigateToRegister,
             onNavigateToHome = navController::navigateToHome
         )
     }

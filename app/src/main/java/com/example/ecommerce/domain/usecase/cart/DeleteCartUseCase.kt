@@ -8,20 +8,27 @@ import com.example.ecommerce.libraries.network.apiCall
 import com.example.ecommerce.libraries.usecase.DataStateUseCase
 import kotlinx.coroutines.flow.FlowCollector
 import javax.inject.Inject
-
 class DeleteCartUseCase @Inject constructor(
-    val repository: CartRepository
-) : DataStateUseCase<DeleteCartUseCase.Params, String>(){
+    private val repository: CartRepository
+) : DataStateUseCase<DeleteCartUseCase.Params, Unit>() {
 
-    override suspend fun FlowCollector<DataState<String>>.execute(
-        params: Params
-    ) {
-        val response = apiCall{ repository.deleteCart(params.cartId) }
-        emit(response)
+    override suspend fun FlowCollector<DataState<Unit>>.execute(params: Params) {
+
+        val response = apiCall { repository.deleteCart(params.cartId) }
+
+        if (response is DataState.Success) {
+            if (params.isCheckout) {
+                repository.clearLocalCart()
+            } else {
+                params.productId?.let { repository.deleteCartItemLocal(it) }
+            }
+        }
+        emit(response.map { Unit })
     }
 
-    data class Params(val cartId : Int)
-
-
-
+    data class Params(
+        val cartId: Int,
+        val isCheckout: Boolean = true,
+        val productId: Int? = null
+    )
 }

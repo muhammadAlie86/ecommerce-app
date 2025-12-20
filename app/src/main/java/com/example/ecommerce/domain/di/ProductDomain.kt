@@ -40,6 +40,11 @@ class ProductDomain {
     fun provideUpdateProductUseCase(repository: ProductRepository): UpdateProductUseCase {
         return UpdateProductUseCase(repository)
     }
+    @Singleton
+    @Provides
+    fun provideGetLocalProductsUseCaseUseCase(repository: ProductRepository): GetLocalProductsUseCase {
+        return GetLocalProductsUseCase(repository)
+    }
 
 
 

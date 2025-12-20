@@ -13,7 +13,6 @@ import com.example.ecommerce.view.component.FullScreenLoading
 
 @Composable
 fun LoginScreen(
-    onNavigateToRegister: () -> Unit,
     onNavigateToHome : () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
@@ -47,7 +46,6 @@ fun LoginScreen(
                 viewModel.valuePassword(password)
             },
             isError = uiState.isError,
-            onNavigateToRegister = { onNavigateToRegister() },
             enable = uiState.isEnable,
             onProcessClick = {
                 viewModel.validateInput(

@@ -1,4 +1,4 @@
-package com.arranet.payajabisnis.ppob.component.tooltip
+package com.example.ecommerce.view.component.tooltip
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -36,9 +36,6 @@ import androidx.compose.ui.window.PopupProperties
 import com.example.ecommerce.view.theme.Black
 import kotlin.math.roundToInt
 
-/**
- * tooltipContent - Content to display in tooltip.
- */
 @Composable
 fun TooltipPopup(
     modifier: Modifier = Modifier,

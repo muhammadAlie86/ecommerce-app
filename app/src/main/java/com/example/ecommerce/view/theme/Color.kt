@@ -12,6 +12,8 @@ val grey_600 = Color(0xFF757575)
 val darker_grey = Color(0xFFAAAAAA)
 val grey = Color(0xFF979797)
 val gold = Color(0xFFFFC107)
+val orange = Color(0xFFFF5722)
+val cyan = Color(0xFF26A69A)
 
 val md_theme_light_primary = Color(0xFF0C84EC)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)

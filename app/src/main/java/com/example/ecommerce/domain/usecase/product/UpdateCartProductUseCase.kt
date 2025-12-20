@@ -1,7 +1,9 @@
-package com.example.ecommerce.domain.usecase.cart
+package com.example.ecommerce.domain.usecase.product
 
+import com.example.ecommerce.core.data.local.entity.CartEntity
 import com.example.ecommerce.core.data.remote.models.request.CartRequest
 import com.example.ecommerce.core.data.repository.CartRepository
+import com.example.ecommerce.core.data.repository.ProductRepository
 import com.example.ecommerce.domain.mapper.toDomain
 import com.example.ecommerce.domain.model.Cart
 import com.example.ecommerce.libraries.network.DataState
@@ -9,11 +11,10 @@ import com.example.ecommerce.libraries.network.apiCall
 import com.example.ecommerce.libraries.usecase.DataStateUseCase
 import kotlinx.coroutines.flow.FlowCollector
 import javax.inject.Inject
-
-class UpdateCartUseCase @Inject constructor(
+class UpdateCartProductUseCase @Inject constructor(
     private val repository: CartRepository,
-    private val updateLocalCartUseCase: UpdateLocalCartUseCase
-) : DataStateUseCase<UpdateCartUseCase.Params, Cart>() {
+    private val productRepository: ProductRepository
+) : DataStateUseCase<UpdateCartProductUseCase.Params, Cart>() {
 
     override suspend fun FlowCollector<DataState<Cart>>.execute(
         params: Params
@@ -21,7 +22,20 @@ class UpdateCartUseCase @Inject constructor(
         val response = apiCall { repository.updateCart(params.cartId, params.request) }
 
         if (response is DataState.Success) {
-            updateLocalCartUseCase(params.request.products)
+            repository.clearLocalCart()
+            val updatedEntities = params.request.products.map { req ->
+                val productDetail = productRepository.getProduct(req.productId)
+
+                CartEntity(
+                    productId = req.productId,
+                    quantity = req.quantity,
+                    title = productDetail.title,
+                    price = productDetail.price,
+                    image = productDetail.imageUrl
+                )
+            }
+
+            repository.upsertLocal(updatedEntities)
         }
         val result = response.map { it.toDomain() }
         emit(result)

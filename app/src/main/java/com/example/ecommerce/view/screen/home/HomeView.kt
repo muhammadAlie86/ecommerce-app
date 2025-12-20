@@ -69,6 +69,7 @@ import com.example.ecommerce.domain.model.Product
 import com.example.ecommerce.domain.model.User
 import com.example.ecommerce.view.component.responsiveTextSize
 import com.example.ecommerce.view.component.shimmerEffect
+import com.example.ecommerce.view.theme.Black
 import com.example.ecommerce.view.theme.PoppinsBold
 import com.example.ecommerce.view.theme.PoppinsMedium
 import com.example.ecommerce.view.theme.White
@@ -145,7 +146,13 @@ fun HomeView(
                 item(span = StaggeredGridItemSpan.FullLine ) {
                     Text(
                         text = "Produk",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = TextStyle.Default.responsiveTextSize(
+                            baseFontSize = 4f
+                        ).copy(
+                            color = Black,
+                            textAlign = TextAlign.Start,
+                            fontFamily = PoppinsMedium,
+                        ),
                         modifier = Modifier.padding(top = 8.dp)
                     )
                 }
@@ -308,7 +315,7 @@ fun CardCategoryItemView(
                 text =  stringResource(R.string.category),
                 style =
                     TextStyle.Default
-                        .responsiveTextSize(baseFontSize = 3.5f)
+                        .responsiveTextSize(baseFontSize = 4f)
                         .copy(
                             color = darker_grey,
                             textAlign = TextAlign.Center,
@@ -544,7 +551,7 @@ fun SheetContent(
 fun SheetContentView(
     label: String,
     value: String,
-    showDivider: Boolean = true // Tambahkan opsi untuk menyembunyikan garis terakhir
+    showDivider: Boolean = true
 ) {
     Column(
         modifier = Modifier
@@ -599,7 +606,6 @@ fun ProductItemShimmer() {
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Column {
-            // Placeholder Gambar
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -608,14 +614,11 @@ fun ProductItemShimmer() {
             )
 
             Column(modifier = Modifier.padding(8.dp)) {
-                // Placeholder Judul (2 baris)
                 Box(modifier = Modifier.fillMaxWidth().height(14.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
                 Spacer(modifier = Modifier.height(4.dp))
                 Box(modifier = Modifier.fillMaxWidth(0.7f).height(14.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
 
                 Spacer(modifier = Modifier.height(8.dp))
-
-                // Placeholder Rating & Harga
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(modifier = Modifier.size(60.dp, 12.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
                     Spacer(modifier = Modifier.width(8.dp))
@@ -623,8 +626,6 @@ fun ProductItemShimmer() {
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
-
-                // Placeholder Harga
                 Box(modifier = Modifier.size(80.dp, 18.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
             }
         }
@@ -647,7 +648,7 @@ fun PreviewHomeHeaderWithItems() {
     MaterialTheme {
         Box(modifier = Modifier.padding(16.dp)) {
             HomeHeaderRightView(
-                cartItemCount = 6, // Skenario keranjang berisi (seperti data JSON Anda)
+                cartItemCount = 6,
                 onNavigateToCart = {},
                 onNavigateToProfile = {}
             )

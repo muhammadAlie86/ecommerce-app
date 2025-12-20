@@ -1,6 +1,7 @@
 package com.example.ecommerce.domain.di
 
 import com.example.ecommerce.core.data.repository.CartRepository
+import com.example.ecommerce.core.data.repository.ProductRepository
 import com.example.ecommerce.domain.usecase.cart.*
 import dagger.Module
 import dagger.Provides
@@ -41,8 +42,18 @@ class CartDomain {
     }
     @Singleton
     @Provides
-    fun provideGetCartUserUseCase(repository: CartRepository): GetCartUserUseCase {
-        return GetCartUserUseCase(repository)
+    fun provideGetCartUserUseCase(repository: CartRepository,productRepository: ProductRepository): GetCartUserUseCase {
+        return GetCartUserUseCase(repository,productRepository)
+    }
+    @Singleton
+    @Provides
+    fun provideGetLocalCartCountUseCaseUseCase(repository: CartRepository): GetLocalCartCountUseCase {
+        return GetLocalCartCountUseCase(repository)
+    }
+    @Singleton
+    @Provides
+    fun provideUpdateLocalCartUseCaseUseCaseUseCase(repository: CartRepository): UpdateLocalCartUseCase {
+        return UpdateLocalCartUseCase(repository)
     }
 
 

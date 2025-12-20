@@ -1,51 +1,65 @@
 package com.example.ecommerce.view.screen.cart
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.ecommerce.R
 import com.example.ecommerce.domain.model.Cart
 import com.example.ecommerce.domain.model.CartItem
 import com.example.ecommerce.domain.model.Product
 import com.example.ecommerce.domain.model.Rating
+import com.example.ecommerce.view.component.DialogConfirmation
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CartScreen() {
-    val mockProducts = listOf(
-        Product(
-            id = 1,
-            title = "ZODE Clara Heels - Beige",
-            price = 9.45,
-            description = "High quality heels",
-            category = "Shoes",
-            imageUrl = "",
-            ratingDetails = Rating(4.5, 100)
-        ),
-        Product(
-            id = 2,
-            title = "Pashmina Kaos Rayon Super Premium",
-            price = 1.39,
-            description = "Soft material hijab",
-            category = "Hijab",
-            imageUrl = "",
-            ratingDetails = Rating(4.8, 50)
-        )
-    )
+fun CartScreen(
+    viewModel: CartViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiStateError by viewModel.uiStateError.collectAsStateWithLifecycle()
+    DialogConfirmation(
+        visible = uiState.isDialogVisible,
+        onYesAction = {
+            uiState.selectedProductId?.let { id ->
+                viewModel.deleteProductFromCart(uiState.userId, id)
+            }
+        },
+        onNoAction = {
+            viewModel.onDismissDialog()
+        },
+        title = stringResource(id = R.string.cancelled)
 
-    val mockCart = Cart(
-        id= 101,
-        userId = 5,
-        purchaseDate = "2023-10-12",
-        products = listOf(
-            CartItem(id = 1, quantity = 1),
-            CartItem(id = 2, quantity = 2)
-        )
     )
-    CartView(
-        cartResponse = mockCart,
-        allProducts = mockProducts
+    CartContent(
+        uiItems = uiState.uiItems,
+        totalPrice = uiState.totalPrice,
+        selectedCount = uiState.selectedCount,
+        isAllSelected = uiState.isAllSelected,
+        onToggleAll = { viewModel.onToggleAll(it) },
+        onProductChecked = { id, checked -> viewModel.onProductCheckedChange(id, checked) },
+        onQuantityChanged = { id, qty -> viewModel.updateQuantity(id, qty) },
+        similarProducts = uiState.similarProducts,
+        onRemove = {productId ->
+            viewModel.onShowDeleteDialog(productId)
+        },
+        onCheckout = {
+            viewModel.checkout()
+        },
+        onUpdate = {item ->
+            viewModel.onSameProductActionTriggered(item)
+        },
+        onSimilarProductSelected = { oldId, newProduct ->
+            viewModel.replaceProductInCart(oldId, newProduct)
+        },
     )
-}
-@Preview
-@Composable
-fun CartScreenPreview() {
-    CartScreen()
+    LaunchedEffect(uiState.userId) {
+        if (uiState.userId != -1) {
+            viewModel.loadInitialData(uiState.userId)
+        }
+    }
 }

@@ -33,6 +33,11 @@ moshi-kotlin-codegen  = "1.15.1"
 moshi-lazy-adapters  = "2.2"
 moshi-kotlin  = "1.15.1"
 coil = "2.6.0"
+foundation = "1.10.0"
+room = "2.6.1"
+sqlite = "2.4.0"
+sqlcipher-android = "4.6.1"
+
 
 [libraries]
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "composeMaterialIcons" }
@@ -74,6 +79,12 @@ timber = {group = "com.jakewharton.timber",name = "timber", version.ref= "timber
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 datastore-preferences-core = { group = "androidx.datastore",name = "datastore-preferences-core" ,version.ref = "datastore-preferences-core"}
 datastore-preferences = {group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore-preferences"}
+androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-sqlite = { group = "androidx.sqlite", name = "sqlite", version.ref = "sqlite" }
+sqlcipher-android = { group = "net.zetetic", name = "sqlcipher-android", version.ref = "sqlcipher-android" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

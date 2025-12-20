@@ -1,5 +1,7 @@
 package com.example.ecommerce.core.di
 
+import com.example.ecommerce.core.data.local.dao.CartDao
+import com.example.ecommerce.core.data.local.dao.ProductDao
 import com.example.ecommerce.core.data.remote.service.AuthService
 import com.example.ecommerce.core.data.remote.service.CartService
 import com.example.ecommerce.core.data.remote.service.ProductService
@@ -24,11 +26,11 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideChartRepository(service: CartService) = CartRepository(service)
+    fun provideChartRepository(service: CartService,cartDao: CartDao) = CartRepository(service,cartDao)
 
     @Singleton
     @Provides
-    fun provideProductRepository(service: ProductService) = ProductRepository(service)
+    fun provideProductRepository(service: ProductService,productDao: ProductDao) = ProductRepository(service,productDao)
 
     @Singleton
     @Provides

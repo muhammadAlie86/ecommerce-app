@@ -29,6 +29,6 @@ interface CartService {
     @POST("carts")
     suspend fun addCart(@Body request: CartRequest): CartResponse
 
-    @DELETE("charts/{id}")
-    suspend fun deleteCart(@Path("id") id: Int): String
+    @DELETE("carts/{id}")
+    suspend fun deleteCart(@Path("id") id: Int): CartResponse
 }

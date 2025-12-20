@@ -35,7 +35,6 @@ fun LoginContent(
     valuePassword : String,
     onValuePassword : (String) -> Unit,
     isError: Boolean = false,
-    onNavigateToRegister: () -> Unit,
     enable : Boolean = false,
     onProcessClick : () -> Unit
 ) {
@@ -114,11 +113,5 @@ fun LoginContent(
 
 
         }
-        TextFooter(
-            modifier = Modifier.align(Alignment.BottomCenter),
-            onNavigate = { onNavigateToRegister() },
-            label = R.string.yet_activated,
-            value = R.string.register
-        )
     }
 }

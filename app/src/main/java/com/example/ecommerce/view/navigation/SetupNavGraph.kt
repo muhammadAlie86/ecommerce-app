@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.ecommerce.view.screen.auth.login.loginNavigation
-import com.example.ecommerce.view.screen.auth.register.registerNavigation
 import com.example.ecommerce.view.screen.auth.splash.SPLASH_ROUTE
 import com.example.ecommerce.view.screen.auth.splash.splashNavigation
 import com.example.ecommerce.view.screen.cart.cartNavigation
@@ -52,7 +51,6 @@ fun SetupNavGraph(
         splashNavigation(navController = navController)
         loginNavigation(navController = navController)
         homeNavigation(navController = navController)
-        registerNavigation(navController = navController)
         categoryDetailNavigation(navController = navController)
         productDetailNavigation(navController = navController)
         cartNavigation(navController = navController)
