@@ -11,6 +11,9 @@ import com.example.ecommerce.libraries.network.apiCall
 import com.example.ecommerce.libraries.usecase.DataStateUseCase
 import kotlinx.coroutines.flow.FlowCollector
 import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
 class UpdateCartProductUseCase @Inject constructor(
     private val repository: CartRepository,
     private val productRepository: ProductRepository
@@ -23,6 +26,7 @@ class UpdateCartProductUseCase @Inject constructor(
 
         if (response is DataState.Success) {
             repository.clearLocalCart()
+
             val updatedEntities = params.request.products.map { req ->
                 val productDetail = productRepository.getProduct(req.productId)
 
@@ -37,8 +41,7 @@ class UpdateCartProductUseCase @Inject constructor(
 
             repository.upsertLocal(updatedEntities)
         }
-        val result = response.map { it.toDomain() }
-        emit(result)
+        emit(response.map { it.toDomain() })
     }
 
     data class Params(val cartId: Int, val request: CartRequest)

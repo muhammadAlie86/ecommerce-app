@@ -3,28 +3,43 @@ package com.example.ecommerce.view.screen.home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.ecommerce.R
+import com.example.ecommerce.view.component.DialogConfirmation
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onNavigateToCategoryDetail : (String) -> Unit,
     onNavigateToProductDetail : (Int) -> Unit,
-    onNavigateToCart : () -> Unit
+    onNavigateToCart : () -> Unit,
+    onNavigateToLogin : () -> Unit
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val uiErrorState by viewModel.uiStateError.collectAsStateWithLifecycle()
     val uiLoadingState by viewModel.uiLoadingState.collectAsStateWithLifecycle()
+    DialogConfirmation(
+        visible = uiState.isDialogVisible,
+        onYesAction = {
+            viewModel.showDialog(false)
+            viewModel.removeUser()
+            onNavigateToLogin()
+        },
+        onNoAction = {
+            viewModel.showDialog(false)
+        },
+        title = stringResource(id = R.string.logout_confirmation)
 
+    )
     HomeContent(
         username = uiState.username,
         onNavigateToCart = {
             if (uiState.cartItemCount > 0) {
                 onNavigateToCart()
             } else {
-                println("Keranjang kosong!")
+                viewModel.handleError(Throwable("Keranjang kosong!"))
             }
         },
         onNavigateToProfile = {
@@ -45,7 +60,9 @@ fun HomeScreen(
         bottomSheetContent = {
             val user = uiState.user
             if (user != null){
-                SheetContent(user)
+                SheetContent(user, logout = {
+                    viewModel.showDialog(true)
+                })
             }
         },
         cartItemCount = uiState.cartItemCount,

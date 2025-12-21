@@ -45,6 +45,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -67,16 +68,17 @@ import coil.request.ImageRequest
 import com.example.ecommerce.R
 import com.example.ecommerce.domain.model.Product
 import com.example.ecommerce.domain.model.User
+import com.example.ecommerce.view.component.ButtonPrimary
 import com.example.ecommerce.view.component.responsiveTextSize
 import com.example.ecommerce.view.component.shimmerEffect
-import com.example.ecommerce.view.theme.Black
-import com.example.ecommerce.view.theme.PoppinsBold
 import com.example.ecommerce.view.theme.PoppinsMedium
+import com.example.ecommerce.view.theme.PoppinsSemiBold
 import com.example.ecommerce.view.theme.White
 import com.example.ecommerce.view.theme.darker_grey
 import com.example.ecommerce.view.theme.gold
 import com.example.ecommerce.view.theme.grey_500
 import com.example.ecommerce.view.theme.grey_600
+import com.example.ecommerce.view.theme.orange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,10 +99,11 @@ fun HomeView(
     Scaffold(
         modifier =
             Modifier.fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 4.dp),
+                .padding(vertical = 4.dp),
         topBar = {
             TopAppBar(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
                 title = {
                     Row(
                         modifier = Modifier
@@ -115,9 +118,14 @@ fun HomeView(
                             HomeHeaderRightView(onNavigateToCart, onNavigateToProfile, cartItemCount)
                         }
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                )
 
             )
+
         },
         content = {innerPadding ->
             LazyVerticalStaggeredGrid(
@@ -149,7 +157,6 @@ fun HomeView(
                         style = TextStyle.Default.responsiveTextSize(
                             baseFontSize = 4f
                         ).copy(
-                            color = Black,
                             textAlign = TextAlign.Start,
                             fontFamily = PoppinsMedium,
                         ),
@@ -269,7 +276,7 @@ fun HomeHeaderLeftView(
             style = TextStyle.Default
                 .responsiveTextSize(baseFontSize = 3.5f)
                 .copy(
-                    color = grey_600,
+                    color = White,
                     textAlign = TextAlign.Start,
                     fontFamily = PoppinsMedium
                 ),
@@ -281,7 +288,7 @@ fun HomeHeaderLeftView(
                 .responsiveTextSize(baseFontSize = 3.5f)
                 .copy(
                     textAlign = TextAlign.Start,
-                    fontFamily = PoppinsBold
+                    fontFamily = PoppinsSemiBold
                 ),
         )
     }
@@ -317,7 +324,6 @@ fun CardCategoryItemView(
                     TextStyle.Default
                         .responsiveTextSize(baseFontSize = 4f)
                         .copy(
-                            color = darker_grey,
                             textAlign = TextAlign.Center,
                         ),
             )
@@ -381,12 +387,12 @@ fun CategoryItemView(
             )
         }
         Text(
+            modifier = Modifier.padding(vertical = 4.dp),
             text =  label,
             style =
                 TextStyle.Default
-                    .responsiveTextSize(baseFontSize = 3f)
+                    .responsiveTextSize(baseFontSize = 3.5f)
                     .copy(
-                        color = darker_grey,
                         textAlign = TextAlign.Center,
                     ),
         )
@@ -429,7 +435,6 @@ fun ProductItemView(
             style = TextStyle.Default
                 .responsiveTextSize(baseFontSize = 3f)
                 .copy(
-                    color = grey_600,
                     textAlign = TextAlign.Start,
                     fontFamily = PoppinsMedium
                 ),
@@ -501,9 +506,9 @@ fun ProductPriceCountView(
             modifier = Modifier.padding(end = 3.dp),
             text = "$$price",
             style = TextStyle.Default
-                .responsiveTextSize(baseFontSize = 3.5f)
+                .responsiveTextSize(baseFontSize = 4.5f)
                 .copy(
-                    color = grey_600,
+                    color = orange,
                     textAlign = TextAlign.Start,
                     fontFamily = PoppinsMedium
                 ),
@@ -515,14 +520,15 @@ fun ProductPriceCountView(
                 .responsiveTextSize(baseFontSize = 2f)
                 .copy(
                     textAlign = TextAlign.Start,
-                    fontFamily = PoppinsBold
+                    fontFamily = PoppinsMedium
                 ),
         )
     }
 }
 @Composable
 fun SheetContent(
-    user: User
+    user: User,
+    logout: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -544,6 +550,14 @@ fun SheetContent(
             label = "Alamat",
             value = fullAddress,
             showDivider = false
+        )
+        ButtonPrimary(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 24.dp) ,
+            text = stringResource(id = R.string.logout),
+            onClick = { logout() },
+            enable = true
         )
     }
 }

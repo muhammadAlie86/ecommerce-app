@@ -38,12 +38,12 @@ fun CardProductDetailContent(
         ) {
 
             Text(
+                modifier = Modifier.padding(8.dp),
                 text =  stringResource(R.string.product),
                 style =
                     TextStyle.Default
-                        .responsiveTextSize(baseFontSize = 4.5f)
+                        .responsiveTextSize(baseFontSize = 4f)
                         .copy(
-                            color = darker_grey,
                             textAlign = TextAlign.Center,
                         ),
             )

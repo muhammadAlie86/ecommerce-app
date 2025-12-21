@@ -54,6 +54,8 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -78,11 +80,19 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.ecommerce.R
 import com.example.ecommerce.core.data.remote.models.common.CartItemUIModel
 import com.example.ecommerce.domain.model.Product
+import com.example.ecommerce.libraries.utils.ConstantsMessage.DEFAULT_MESSAGE
+import com.example.ecommerce.view.component.ContainerBody
+import com.example.ecommerce.view.component.DialogCommon
+import com.example.ecommerce.view.component.FullScreenLoading
+import com.example.ecommerce.view.component.TopAppBarWithNavIcon
 import com.example.ecommerce.view.component.responsiveTextSize
 import com.example.ecommerce.view.screen.home.CardCategoryItemView
 import com.example.ecommerce.view.screen.home.CategoryShimmer
+import com.example.ecommerce.view.screen.home.HomeHeaderLeftView
+import com.example.ecommerce.view.screen.home.HomeHeaderRightView
 import com.example.ecommerce.view.screen.home.ProductItemShimmer
 import com.example.ecommerce.view.screen.home.ProductItemView
 import com.example.ecommerce.view.theme.Black
@@ -99,6 +109,7 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartContent(
+    popBackStack: () -> Unit,
     uiItems: List<CartItemUIModel>,
     totalPrice: Double,
     selectedCount: Int,
@@ -106,19 +117,29 @@ fun CartContent(
     onToggleAll: (Boolean) -> Unit,
     onProductChecked: (Int, Boolean) -> Unit,
     onQuantityChanged: (Int, Int) -> Unit,
-    modifier: Modifier = Modifier,
     onRemove: (Int) -> Unit,
     onCheckout: () -> Unit,
     onUpdate: (CartItemUIModel) -> Unit,
     similarProducts: List<Product>,
-    onSimilarProductSelected: (oldProductId: Int, newProduct: Product) -> Unit
+    onSimilarProductSelected: (oldProductId: Int, newProduct: Product) -> Unit,
+    onSwipeClick: (Int) -> Unit = {},
+    isLoading : Boolean = false,
+    isError : Boolean = false,
+    onAction: () -> Unit = {},
+    onDismissError: () -> Unit = {},
+    errorMessage: Throwable? = null
 ) {
     val swipedItemIds = remember { mutableStateListOf<Int>() }
     var showSheet by remember { mutableStateOf(false) }
     var selectedItemToReplace by remember { mutableStateOf<CartItemUIModel?>(null) }
     val sheetState = rememberModalBottomSheetState()
-    Scaffold(
-        modifier = modifier,
+    ContainerBody(
+        topBar = {
+            TopAppBarWithNavIcon(
+                titleResId = "Keranjang Saya",
+                pressOnBack = popBackStack
+            )
+        },
         bottomBar = {
             CartBottomBar(
                 totalPrice = totalPrice,
@@ -129,6 +150,18 @@ fun CartContent(
             )
         }
     ) { padding ->
+
+
+        DialogCommon(
+            label = R.string.information,
+            visible = isError,
+            onDismiss = onDismissError,
+            action = onAction,
+            message = errorMessage?.localizedMessage ?: DEFAULT_MESSAGE
+        )
+
+
+        FullScreenLoading(visible = isLoading)
         if (showSheet) {
             ModalBottomSheet(
                 onDismissRequest = { showSheet = false },
@@ -187,7 +220,9 @@ fun CartContent(
                                     } else {
                                         swipedItemIds.remove(item.productId)
                                     }
-                                }
+                                },
+                                onSwipeClick = onSwipeClick
+
                             )
 
                             if (index < uiItems.lastIndex) {
@@ -208,7 +243,8 @@ fun ProductRow(
     item: CartItemUIModel,
     onCheckedChange: (Boolean) -> Unit,
     onQuantityChange: (Int, Int) -> Unit,
-    isSwiped: Boolean = false
+    isSwiped: Boolean = false,
+    onSwipeClick: (Int) -> Unit = {}
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -217,13 +253,14 @@ fun ProductRow(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.End),
+                .align(Alignment.End)
+                .clickable { onSwipeClick(item.productId) },
             text = if (isSwiped) "selesai" else "ubah",
             style = TextStyle.Default.responsiveTextSize(
                 baseFontSize = 3.5f
             ).copy(
                 color = darker_grey,
-                textAlign = TextAlign.Start,
+                textAlign = TextAlign.End,
                 fontFamily = PoppinsMedium,
             )
         )
@@ -286,7 +323,7 @@ fun ProductRow(
                         text = "$ ${item.price}",
                         color = orange,
                         style = TextStyle.Default.responsiveTextSize(
-                            baseFontSize = 2.5f
+                            baseFontSize = 4f
                         ).copy(
                             color = orange,
                             textAlign = TextAlign.Start,
@@ -430,7 +467,8 @@ fun SwipeableProductRow(
     onRemove: (Int) -> Unit,
     onUpdate: (CartItemUIModel) -> Unit,
     onSwipeStateChanged: (Boolean) -> Unit,
-    isSwiped: Boolean
+    isSwiped: Boolean,
+    onSwipeClick: (Int) -> Unit = {}
 ) {
     val density = LocalDensity.current
     val scope = rememberCoroutineScope()
@@ -524,10 +562,15 @@ fun SwipeableProductRow(
                 .anchoredDraggable(state, Orientation.Horizontal),
             color = White
         ) {
-            ProductRow(item, onCheckedChange,
+            ProductRow(
+                item = item,
+                onCheckedChange = onCheckedChange,
+                onSwipeClick = onSwipeClick,
                 onQuantityChange = { productId, newQty ->
                     onQuantityChange(productId, newQty)
-                }, isSwiped)
+                },
+                isSwiped = isSwiped
+            )
         }
     }
 }

@@ -6,7 +6,7 @@ import com.example.ecommerce.libraries.base.mvi.LoadingState
 import com.example.ecommerce.libraries.base.mvi.MviViewModel
 import com.example.ecommerce.libraries.utils.DataStoreManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +18,7 @@ class SplashViewModel @Inject constructor(
         isLoggedIn()
     }
     private fun isLoggedIn() = safeLaunch{
-        val isLogin = dataStoreManager.isLoggedIn.firstOrNull()
+        val isLogin = dataStoreManager.isLoggedIn.first()
         setState {
             currentState.copy(
                 isLoggedIn = isLogin

@@ -1,5 +1,7 @@
 package com.example.ecommerce.libraries.network
 
+import com.example.ecommerce.libraries.utils.ConstantsMessage.DEFAULT_MESSAGE
+import com.example.ecommerce.libraries.utils.ConstantsMessage.INCORECT_AUTH
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.ConnectException
@@ -13,7 +15,7 @@ sealed class Failure : IOException() {
     data object UnknownHostError : Failure()
     data object EmptyResponse : Failure()
     data object InternetError : Failure()
-    data object UnAuthorizedException : Failure()
+    data class UnAuthorizedException(override var message: String) : Failure()
     data class TimeOutError(override var message: String) : Failure()
     data class ApiError(var code: Int = 0, override var message: String) : Failure()
     data class ServerError(var code: Int = 0, override var message: String) : Failure()
@@ -27,11 +29,11 @@ sealed class Failure : IOException() {
 
 
 fun Throwable.handleThrowable(): Failure {
-    // Timber.e(this)
+
     return if (this is UnknownHostException) {
         Failure.ConnectivityError()
     } else if (this is HttpException && this.code() == HttpStatusCode.Unauthorized.code) {
-        Failure.UnAuthorizedException
+        Failure.UnAuthorizedException(INCORECT_AUTH)
     } else if (this is ConnectException) {
         Failure.ConnectivityError()
     } else if (this is SocketTimeoutException) {
@@ -43,7 +45,6 @@ fun Throwable.handleThrowable(): Failure {
     } else if (this is UnknownServiceException) {
         Failure.ConnectivityError()
     } else {
-        Failure.UnknownError("Permintaan gagal diproses. Harap coba kembali.\n" +
-                "Mohon hubungi Helpdesk jika diperlukan.")
+        Failure.UnknownError(DEFAULT_MESSAGE)
     }
 }

@@ -1,12 +1,11 @@
 package com.example.ecommerce.view.screen.cart
 
-import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.TransformOrigin
 import com.example.ecommerce.core.data.remote.models.common.CartItemUIModel
 import com.example.ecommerce.core.data.remote.models.request.CartRequest
 import com.example.ecommerce.core.data.remote.models.request.ProductItemRequest
 import com.example.ecommerce.domain.model.Cart
 import com.example.ecommerce.domain.model.Product
-import com.example.ecommerce.domain.usecase.cart.AddCartUseCase
 import com.example.ecommerce.domain.usecase.cart.DeleteCartUseCase
 import com.example.ecommerce.domain.usecase.cart.GetCartUserUseCase
 import com.example.ecommerce.domain.usecase.cart.UpdateCartUseCase
@@ -21,6 +20,7 @@ import com.example.ecommerce.libraries.utils.DataStoreManager
 import com.example.ecommerce.libraries.utils.DateUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -56,7 +56,7 @@ class CartViewModel @Inject constructor(
                 setState { currentState.copy(productList = products) }
                 checkAndMapData()
             } else {
-                handleError(Throwable("PRODUCT_EMPTY"))
+                handleError(Throwable("PRODUCT TIDAK TERSEDIA"))
             }
         }
     }
@@ -64,6 +64,7 @@ class CartViewModel @Inject constructor(
         getLocalProductsUseCase().collect { products ->
             if (products.isNotEmpty()) {
                 setState { currentState.copy(productList = products) }
+                checkAndMapData()
             }
         }
     }
@@ -71,11 +72,12 @@ class CartViewModel @Inject constructor(
     private fun getCartUser(userId: Int) = safeLaunch {
         val params = GetCartUserUseCase.Params(userId)
         execute(getCartUserUseCase(params)) { cartList ->
+            val cartId = cartList.first().id
             if (cartList.isNotEmpty()) {
-                setState { currentState.copy(cartList = cartList) }
+                setState { currentState.copy(cartList = cartList, cartId = cartId) }
                 checkAndMapData()
             } else {
-                handleError(Throwable("CART_EMPTY"))
+                handleError(Throwable("KERANJANG KOSONG"))
             }
         }
     }
@@ -83,27 +85,25 @@ class CartViewModel @Inject constructor(
         val params = DeleteCartUseCase.Params(userId)
 
         execute(deleteCartUseCase(params)) { response ->
-            val currentList = currentState.cartList
+            val currentCartList = currentState.cartList
+            val updatedCartList = currentCartList.map { cart ->
+                val remainingProducts = cart.products.filter { it.id != productId }
+                cart.copy(products = remainingProducts)
+            }.filter { it.products.isNotEmpty() }
 
-            val updatedList = currentList.filter { it.id != productId }
+            val updatedUiItems = currentState.uiItems.filter { it.productId != productId }
 
-            if (updatedList.isNotEmpty()) {
-                setState {
-                    currentState.copy(
-                        cartList = updatedList,
-                        isDialogVisible = false, // Tutup dialog
-                        selectedProductId = null  // Reset ID
-                    )
-                }
-            } else {
-                setState {
-                    currentState.copy(
-                        cartList = emptyList(),
-                        isDialogVisible = false,
-                        selectedProductId = null
-                    )
-                }
-                handleError(Throwable("CART_EMPTY"))
+            setState {
+                currentState.copy(
+                    cartList = updatedCartList,
+                    uiItems = updatedUiItems,
+                    isDialogVisible = false,
+                    selectedProductId = null
+                )
+            }
+
+            if (updatedUiItems.isEmpty()) {
+                handleError(Throwable("KERANJANG KOSONG"))
             }
         }
     }
@@ -121,32 +121,44 @@ class CartViewModel @Inject constructor(
                 }
             }
             else{
-                handleError(Throwable("PRODUCT_EMPTY"))
+                handleError(Throwable("PRODUCT TIDAK TERSEDIA"))
             }
         }
     }
     fun replaceProductInCart(oldProductId: Int, newProduct: Product) = safeLaunch {
         val currentItems = currentState.uiItems
 
-        val updatedProductsRequest = currentItems.map {
+        val optimisticList = currentItems.map {
             if (it.productId == oldProductId) {
-                ProductItemRequest(newProduct.id, 1)
-            } else {
-                ProductItemRequest(it.productId, it.quantity)
-            }
+                it.copy(
+                    productId = newProduct.id,
+                    title = newProduct.title,
+                    quantity = 1,
+                    imageUrl = newProduct.imageUrl
+                )
+            } else it
         }
 
+        setState { currentState.copy(uiItems = optimisticList) }
+
+        val updatedProductsRequest = optimisticList.map {
+            ProductItemRequest(it.productId, it.quantity)
+        }
+        val currentCartId = currentState.cartId
         val params = UpdateCartProductUseCase.Params(
-            cartId = 1,
+            cartId = currentCartId,
             request = CartRequest(
                 userId = currentState.userId,
                 date = DateUtil.getCurrentDate(),
                 products = updatedProductsRequest
             )
         )
-
         execute(updateCartProductUseCase(params)) {
-            // Berhasil
+            if (it.products.isNotEmpty()){
+                handleError(Throwable("Berhasil Melakukan Perubahan"))
+            }else{
+                handleError(Throwable("Gagal Melakukan Perubahan"))
+            }
         }
     }
     fun updateQuantity(productId: Int, newQuantity: Int) = safeLaunch {
@@ -165,10 +177,10 @@ class CartViewModel @Inject constructor(
             date = DateUtil.getCurrentDate(),
             products = listOf(ProductItemRequest(productId, newQuantity))
         )
-
-        val params = UpdateCartUseCase.Params(cartId = 1, request = requestBody)
+        val currentCartId = currentState.cartId
+        val params = UpdateCartUseCase.Params(cartId = currentCartId, request = requestBody)
         execute(updateCartUseCase(params)) {
-
+            Timber.d("updateQuantity: $it")
         }
     }
     fun checkout() = safeLaunch {
@@ -192,7 +204,12 @@ class CartViewModel @Inject constructor(
 
             val params = UpdateCartUseCase.Params(cartId = 1, request = requestBody)
             execute(updateCartUseCase(params)) {
-                setState { currentState.copy(isSuccess = true) }
+                if (it.products.isNotEmpty()){
+                    handleError(Throwable("Pembelian Berhasil"))
+                    setState { currentState.copy(isSuccess = true) }
+                }else{
+                    handleError(Throwable("Gagal Melakukan Pembelian"))
+                }
             }
         }
     }
@@ -231,6 +248,16 @@ class CartViewModel @Inject constructor(
         }
     }
 
+    fun onToggleSwipe(productId: Int, isSwiped: Boolean) {
+        setState {
+            val newSwipedIds = if (isSwiped) {
+                swipedProductIds + productId
+            } else {
+                swipedProductIds - productId
+            }
+            copy(swipedProductIds = newSwipedIds)
+        }
+    }
 
 
     fun onToggleAll(isSelected: Boolean) {
@@ -266,13 +293,15 @@ data class CartState(
     val productList : List<Product> = emptyList(),
     val cartList: List<Cart> = emptyList(),
     val userId: Int = -1,
+    val cartId: Int = -1,
     val isDialogVisible : Boolean = false,
     val selectedProductId: Int? = null,
     val isSuccess: Boolean = false,
     val showSimilarSheet: Boolean = false,
     val selectedProductToReplace: Int? = null,
     val similarProducts: List<Product> = emptyList(),
-    val showSheet: Boolean = false
+    val showSheet: Boolean = false,
+    val swipedProductIds: Set<Int> = emptySet(),
 ) : IViewState {
     val totalPrice: Double = uiItems.filter { it.isSelected }.sumOf { it.price * it.quantity }
     val isAllSelected: Boolean = uiItems.isNotEmpty() && uiItems.all { it.isSelected }

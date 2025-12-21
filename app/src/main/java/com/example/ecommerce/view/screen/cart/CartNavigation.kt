@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.ecommerce.view.screen.home.HomeScreen
+import com.example.ecommerce.view.screen.home.navigateToHome
 import com.example.ecommerce.view.screen.product.category.navigateToCategoryDetail
 import com.example.ecommerce.view.screen.product.detail.navigateToProductDetail
 
@@ -29,7 +30,10 @@ fun NavGraphBuilder.cartNavigation(
         route = CART_ROUTE,
     )
     {
-        CartScreen()
+        CartScreen(
+            navController::popBackStack,
+            onNavigateToHome = navController::navigateToHome
+        )
 
     }
 

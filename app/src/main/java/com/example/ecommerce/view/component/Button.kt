@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.ecommerce.view.theme.Black
 import com.example.ecommerce.view.theme.PoppinsSemiBold
+import com.example.ecommerce.view.theme.White
 import com.example.ecommerce.view.theme.grey
 
 
@@ -47,7 +48,7 @@ fun ButtonPrimary(
             style = TextStyle.Default
                 .responsiveTextSize(baseFontSize = 3.5f)
                 .copy(
-                    color = Black,
+                    color = White,
                     textAlign = TextAlign.Center,
                     fontFamily = PoppinsSemiBold
                 )

@@ -24,7 +24,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -44,6 +46,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -53,13 +56,12 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.ecommerce.R
 import com.example.ecommerce.view.component.responsiveTextSize
+import com.example.ecommerce.view.component.shimmerEffect
 import com.example.ecommerce.view.theme.Black
 import com.example.ecommerce.view.theme.PoppinsMedium
 import com.example.ecommerce.view.theme.PoppinsSemiBold
@@ -68,7 +70,84 @@ import com.example.ecommerce.view.theme.darker_grey
 import com.example.ecommerce.view.theme.gold
 import com.example.ecommerce.view.theme.orange
 
+@Composable
+fun ProductDetailShimmer() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Box(modifier = Modifier.size(40.dp).clip(CircleShape).shimmerEffect())
+            Box(modifier = Modifier.size(40.dp).clip(CircleShape).shimmerEffect())
+        }
 
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(350.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .shimmerEffect()
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Box(
+            modifier = Modifier
+                .width(120.dp)
+                .height(28.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .shimmerEffect()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(modifier = Modifier.width(80.dp).height(16.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
+            Spacer(modifier = Modifier.width(12.dp))
+            Box(modifier = Modifier.size(16.dp).clip(CircleShape).shimmerEffect())
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Box(
+            modifier = Modifier
+                .width(150.dp)
+                .height(20.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .shimmerEffect()
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        repeat(3) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(14.dp)
+                    .clip(RoundedCornerShape(4.dp))
+                    .shimmerEffect()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+    }
+
+    Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+        ) {
+            Box(modifier = Modifier.weight(0.3f).fillMaxHeight().shimmerEffect())
+            Box(modifier = Modifier.weight(0.7f).fillMaxHeight().shimmerEffect())
+        }
+    }
+}
 @Composable
 
 fun ProductInfoSection(price: String, soldCount: String, rating: String, desc: String) {
@@ -124,7 +203,6 @@ fun ProductInfoSection(price: String, soldCount: String, rating: String, desc: S
             style = TextStyle.Default
                 .responsiveTextSize(baseFontSize = 4.5f)
                 .copy(
-                    color = darker_grey,
                     fontFamily = PoppinsSemiBold
                 ),
         )
@@ -134,10 +212,10 @@ fun ProductInfoSection(price: String, soldCount: String, rating: String, desc: S
         Text(
             text = desc,
             style = TextStyle.Default
-                .responsiveTextSize(baseFontSize = 4.5f)
+                .responsiveTextSize(baseFontSize = 4f)
                 .copy(
                     color = darker_grey,
-                    fontFamily = PoppinsSemiBold
+                    fontFamily = PoppinsMedium
                 ),
             lineHeight = 20.sp
         )
@@ -160,7 +238,7 @@ fun ProductImageHeader(
             model = imageUrl,
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.FillHeight,
             placeholder = painterResource(id = R.drawable.ic_error_image)
         )
 

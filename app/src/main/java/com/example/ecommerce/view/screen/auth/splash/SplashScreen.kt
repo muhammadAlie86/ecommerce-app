@@ -40,34 +40,19 @@ fun SplashScreen(
     ContainerBody {
         Box(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.primary)
                 .fillMaxSize()
         ) {
 
 
             Image(
-                painter = painterResource(id = R.drawable.ic_bayar_bayar_plus),
-                contentDescription = null,
+                painter = painterResource(id = R.drawable.ic_logo_app),
+                contentDescription = "logo app",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp)
                     .align(Alignment.Center)
                     .size(200.dp)
-            )
-
-            Text(
-                modifier = Modifier
-                    .padding(bottom = 30.dp)
-                    .align(Alignment.BottomCenter),
-                text = "v-${BuildConfig.VERSION_NAME}",
-                style = TextStyle.Default.responsiveTextSize(
-                    baseFontSize = 3.5f
-                ).copy(
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-
-                    )
             )
 
         }

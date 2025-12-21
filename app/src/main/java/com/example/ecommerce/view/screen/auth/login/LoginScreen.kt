@@ -21,21 +21,22 @@ fun LoginScreen(
     val uiErrorState by viewModel.uiStateError.collectAsStateWithLifecycle()
     val uiLoadingState by viewModel.uiLoadingState.collectAsStateWithLifecycle()
 
-    DialogCommon(
-        label = R.string.information,
-        visible = uiErrorState.isError,
-        onDismiss = {
-            viewModel.resetError()
-        },
-        action = {
-            viewModel.resetError()
-        },
-        message = uiErrorState.errorMessage?.localizedMessage ?: DEFAULT_MESSAGE
-    )
-
-    FullScreenLoading(visible = uiLoadingState.isLoading)
 
     ContainerBody {
+        DialogCommon(
+            label = R.string.information,
+            visible = uiErrorState.isError,
+            onDismiss = {
+                viewModel.resetError()
+            },
+            action = {
+                viewModel.resetError()
+            },
+            message = uiErrorState.errorMessage?.localizedMessage ?: DEFAULT_MESSAGE
+        )
+
+        FullScreenLoading(visible = uiLoadingState.isLoading)
+
         LoginContent(
             valueUsername = uiState.username,
             onValueUsername = {username ->

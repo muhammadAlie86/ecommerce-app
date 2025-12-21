@@ -3,6 +3,8 @@ package com.example.ecommerce.view.screen.home
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.ecommerce.view.screen.auth.login.navigateToLogin
+import com.example.ecommerce.view.screen.auth.login.navigateToLoginWithPrams
 import com.example.ecommerce.view.screen.cart.navigateToCart
 import com.example.ecommerce.view.screen.product.category.navigateToCategoryDetail
 import com.example.ecommerce.view.screen.product.detail.navigateToProductDetail
@@ -36,7 +38,8 @@ fun NavGraphBuilder.homeNavigation(
         HomeScreen(
             onNavigateToCategoryDetail = navController::navigateToCategoryDetail,
             onNavigateToProductDetail = navController::navigateToProductDetail,
-            onNavigateToCart = navController::navigateToCart
+            onNavigateToCart = navController::navigateToCart,
+            onNavigateToLogin = navController::navigateToLoginWithPrams
 
         )
 

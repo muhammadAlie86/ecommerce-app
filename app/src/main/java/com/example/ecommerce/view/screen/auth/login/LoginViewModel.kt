@@ -89,8 +89,6 @@ class LoginViewModel @Inject constructor(
                     }
                     setState { currentState.copy(onNavigate = true) }
                 }
-                println("User ID: ${userPayload?.userId}")
-                println("Username: ${userPayload?.username}")
 
             }
             else{

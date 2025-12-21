@@ -31,6 +31,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
@@ -57,6 +58,7 @@ fun FullScreenLoading(
                 contentAlignment = Alignment.Center,
                 modifier = when (modifier == Modifier) {
                     true -> Modifier
+                        .background(MaterialTheme.colorScheme.background).alpha(0.7f)
                         .fillMaxSize()
 
                     false -> modifier

@@ -91,7 +91,7 @@ class HomeViewModel @Inject constructor(
     fun getUserData() = safeLaunch {
         val userId = dataStoreManager.getUserId.first()
         val username = dataStoreManager.getUsername.first()
-
+        dataStoreManager.saveLoginStatus(true)
         setState { currentState.copy(userId = userId, username = username) }
 
         if (userId != -1) {
@@ -99,6 +99,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun showDialog(isDialogVisible: Boolean){
+        setState { currentState.copy(isDialogVisible = isDialogVisible) }
+    }
+    fun removeUser() = safeLaunch {
+        dataStoreManager.saveLoginStatus(false)
+        dataStoreManager.saveUserId(-1)
+}
 
 
     override fun createInitialState(): HomeState = HomeState()
@@ -113,5 +120,7 @@ data class HomeState(
     val isSheetOpen : Boolean = false,
     val username : String = "",
     val userId: Int = -1,
-    val cartItemCount : Int= 0
+    val cartItemCount : Int= 0,
+    val isLoggedIn : Boolean = false,
+    val isDialogVisible : Boolean = false,
 ) : IViewState

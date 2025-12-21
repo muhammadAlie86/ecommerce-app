@@ -1,5 +1,6 @@
 package com.example.ecommerce.domain.di
 
+import com.example.ecommerce.core.data.repository.CartRepository
 import com.example.ecommerce.core.data.repository.ProductRepository
 import com.example.ecommerce.domain.usecase.product.*
 import dagger.Module
@@ -37,8 +38,8 @@ class ProductDomain {
     }
     @Singleton
     @Provides
-    fun provideUpdateProductUseCase(repository: ProductRepository): UpdateProductUseCase {
-        return UpdateProductUseCase(repository)
+    fun provideUpdateProductUseCase(cartRepository: CartRepository,repository: ProductRepository): UpdateCartProductUseCase {
+        return UpdateCartProductUseCase(cartRepository,repository)
     }
     @Singleton
     @Provides

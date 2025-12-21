@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.example.ecommerce.R
 import com.example.ecommerce.view.theme.Black
 import com.example.ecommerce.view.theme.PoppinsSemiBold
+import com.example.ecommerce.view.theme.White
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,7 +40,7 @@ fun TopAppBarWithNavIcon(
                 style = TextStyle.Default
                     .responsiveTextSize(baseFontSize = 4.5f)
                     .copy(
-                        color = Black,
+                        color = White,
                         textAlign = TextAlign.Center,
                         fontFamily = PoppinsSemiBold
                     )
@@ -49,7 +50,7 @@ fun TopAppBarWithNavIcon(
             Icon(
                 painterResource(R.drawable.ic_back),
                 contentDescription = null,
-                tint = Black,
+                tint = White,
                 modifier = Modifier
                     .padding(5.dp)
                     .clickable { pressOnBack() }

@@ -135,18 +135,17 @@ fun TooltipPopup(
                     .background(
                         shape = backgroundShape, color = backgroundColor)
                     .drawBehind {
-                        // Menggambar garis horizontal sesuai ukuran konten
+
                         val lineY = if (position.alignment == TooltipAlignment.TopCenter) {
-                            arrowHeight.toPx() // Jika arrow di atas, garis digambar tepat di bawah arrow
+                            arrowHeight.toPx()
                         } else {
-                            size.height - arrowHeight.toPx() // Jika arrow di bawah, garis digambar tepat di atas arrow
+                            size.height - arrowHeight.toPx()
                         }
 
-                        // Menggambar garis sepanjang ukuran konten
                         drawLine(
                             color = Red,
-                            start = Offset(0f, lineY), // Mulai dari kiri konten
-                            end = Offset(size.width, lineY), // Hingga kanan konten
+                            start = Offset(0f, lineY),
+                            end = Offset(size.width, lineY),
                             strokeWidth = 5f
                         )
                     },
@@ -175,29 +174,23 @@ internal class TooltipAlignmentOffsetPositionProvider(
     ): IntOffset {
         var popupPosition = IntOffset(0, 0)
 
-        // Get the aligned point inside the parent
         val parentAlignmentPoint = alignment.align(
             IntSize.Zero,
             IntSize(anchorBounds.width, anchorBounds.height),
             layoutDirection
         )
-        // Get the aligned point inside the child
         val relativePopupPos = alignment.align(
             IntSize.Zero,
             IntSize(popupContentSize.width, popupContentSize.height),
             layoutDirection
         )
 
-        // Add the position of the parent
         popupPosition += IntOffset(anchorBounds.left, anchorBounds.top)
 
-        // Add the distance between the parent's top left corner and the alignment point
         popupPosition += parentAlignmentPoint
 
-        // Subtract the distance between the children's top left corner and the alignment point
         popupPosition -= IntOffset(relativePopupPos.x, relativePopupPos.y)
 
-        // Add the user offset
         val resolvedOffset = IntOffset(
             offset.x * (if (layoutDirection == LayoutDirection.Ltr) 1 else -1),
             offset.y

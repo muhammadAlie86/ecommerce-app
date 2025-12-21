@@ -51,7 +51,6 @@ abstract class MvvmViewModel : ViewModel() {
     ) {
         callFlow
             .catch { e ->
-                if (e is Failure.UnAuthorizedException) return@catch
                 handleError(Throwable(e.localizedMessage ?: DEFAULT_EXCEPTION_MESSAGE))}
             .collect {
                 completionHandler.invoke(it)
@@ -68,7 +67,6 @@ abstract class MvvmViewModel : ViewModel() {
             }
             .catch {e ->
                 hideLoading()
-                if (e is Failure.UnAuthorizedException) return@catch
                 if (e is CancellationException) throw e
                 handleError(Throwable(DEFAULT_EXCEPTION_MESSAGE))
             }

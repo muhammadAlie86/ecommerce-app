@@ -42,7 +42,6 @@ abstract class MviViewModel<State : IViewState> : MvvmViewModel() {
     }
     override fun handleError(exception: Throwable) {
         super.handleError(exception)
-        if (exception == Failure.UnAuthorizedException) return
         _uiStateError.update {
             it.copy(isError = true, errorMessage = exception)
         }

@@ -18,10 +18,13 @@ import com.example.ecommerce.view.component.DialogConfirmation
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(
+    popBackStack: () -> Unit,
+    onNavigateToHome : () -> Unit,
     viewModel: CartViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val uiStateError by viewModel.uiStateError.collectAsStateWithLifecycle()
+    val uiLoadingState by viewModel.uiLoadingState.collectAsStateWithLifecycle()
     DialogConfirmation(
         visible = uiState.isDialogVisible,
         onYesAction = {
@@ -35,7 +38,10 @@ fun CartScreen(
         title = stringResource(id = R.string.cancelled)
 
     )
+
+
     CartContent(
+        popBackStack = { popBackStack() },
         uiItems = uiState.uiItems,
         totalPrice = uiState.totalPrice,
         selectedCount = uiState.selectedCount,
@@ -56,6 +62,22 @@ fun CartScreen(
         onSimilarProductSelected = { oldId, newProduct ->
             viewModel.replaceProductInCart(oldId, newProduct)
         },
+        onSwipeClick = {productId ->
+            viewModel.onToggleSwipe(productId, !uiState.swipedProductIds.contains(productId))
+        },
+        isLoading = uiLoadingState.isLoading,
+        isError = uiStateError.isError,
+        onAction = {
+
+            viewModel.resetError()
+            if (uiState.isSuccess){
+                onNavigateToHome()
+            }
+        },
+        onDismissError = {
+            viewModel.resetError()
+        },
+        errorMessage = uiStateError.errorMessage
     )
     LaunchedEffect(uiState.userId) {
         if (uiState.userId != -1) {

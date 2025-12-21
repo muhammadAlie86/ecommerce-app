@@ -6,6 +6,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.ecommerce.view.screen.cart.navigateToCart
+import com.example.ecommerce.view.screen.home.navigateToHome
 import timber.log.Timber
 
 
@@ -52,7 +54,9 @@ fun NavGraphBuilder.productDetailNavigation(
     )
     {
         ProductDetailScreen(
-            popBackStack = navController::popBackStack
+            popBackStack = navController::popBackStack,
+            onNavigateToCart = navController::navigateToCart,
+            onNavigateToHome = navController::navigateToHome
         )
 
     }

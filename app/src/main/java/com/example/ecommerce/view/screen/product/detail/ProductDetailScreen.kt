@@ -32,14 +32,22 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.ecommerce.R
+import com.example.ecommerce.libraries.utils.ConstantsMessage.DEFAULT_MESSAGE
+import com.example.ecommerce.view.component.DialogCommon
 import com.example.ecommerce.view.theme.cyan
 
 @OptIn(ExperimentalMaterial3Api::class)@Composable
 fun ProductDetailScreen(
     popBackStack: () -> Unit = {},
+    onNavigateToCart: () -> Unit = {},
+    onNavigateToHome : () -> Unit = {},
     viewModel: ProductDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiLoadingState by viewModel.uiLoadingState.collectAsStateWithLifecycle()
+    val uiStateError by viewModel.uiStateError.collectAsStateWithLifecycle()
+
     val product = uiState.product
 
     var isAnimating by remember { mutableStateOf(false) }
@@ -86,7 +94,7 @@ fun ProductDetailScreen(
                         imageUrl = item.imageUrl,
                         cartCount = uiState.cartItemCount,
                         onBackClick = popBackStack,
-                        onCartClick = { /* Navigate to Cart */ },
+                        onCartClick = {onNavigateToCart()},
                         onTargetPositioned = { cartIconPosition = it }
                     )
 
@@ -98,6 +106,23 @@ fun ProductDetailScreen(
                     )
                 }
             }
+        }
+        DialogCommon(
+            label = R.string.information,
+            visible = uiStateError.isError,
+            onDismiss = {
+                viewModel.resetError()
+                onNavigateToHome()
+                        },
+            action = {
+                viewModel.resetError()
+                onNavigateToHome()
+                     },
+            message = uiStateError.errorMessage?.localizedMessage ?: DEFAULT_MESSAGE
+        )
+
+        if (uiLoadingState.isLoading){
+            ProductDetailShimmer()
         }
 
         if (isAnimating) {
