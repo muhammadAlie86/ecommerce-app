@@ -50,21 +50,39 @@ Struktur paket diatur berdasarkan lapisan arsitektur untuk memisahkan tanggung j
 
 Berikut adalah beberapa tangkapan layar dari aplikasi:
 
-### Splash Screen
-![Splash Screen](screenshoot/ic_splash.jpeg)
-
-### Login Screen
-![Login Screen](screenshoot/ic_login.jpeg)
-
-### Home Screen
-![Home Screen](screenshoot/ic_home.jpeg)
-
-### Product Detail Screen
-![Product Detail Screen](screenshoot/ic_product_detail.jpeg)
-
-### Cart Screen
-![Cart Screen](screenshoot/ic_keranjang.jpeg)
-
-### Profile Screen
-![Profile Screen](screenshoot/ic_profile.jpeg)
-
+<table>
+  <tr>
+    <td align="center">
+      <img src="screenshoot/ic_splash.jpeg" alt="Splash Screen" width="250">
+      <br>
+      <sub><b>Splash Screen</b></sub>
+    </td>
+    <td align="center">
+      <img src="screenshoot/ic_login.jpeg" alt="Login Screen" width="250">
+      <br>
+      <sub><b>Login Screen</b></sub>
+    </td>
+    <td align="center">
+      <img src="screenshoot/ic_home.jpeg" alt="Home Screen" width="250">
+      <br>
+      <sub><b>Home Screen</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="screenshoot/ic_product_detail.jpeg" alt="Product Detail" width="250">
+      <br>
+      <sub><b>Product Detail</b></sub>
+    </td>
+    <td align="center">
+      <img src="screenshoot/ic_keranjang.jpeg" alt="Cart Screen" width="250">
+      <br>
+      <sub><b>Cart Screen</b></sub>
+    </td>
+    <td align="center">
+      <img src="screenshoot/ic_profile.jpeg" alt="Profile Screen" width="250">
+      <br>
+      <sub><b>Profile Screen</b></sub>
+    </td>
+  </tr>
+</table>
